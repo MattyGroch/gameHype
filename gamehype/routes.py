@@ -4,4 +4,3 @@ from gamehype import app
 @app.route('/index')
 def index():
     return "Hello, Idiot! You did it!"
-    return "Okay, now what's next?"
