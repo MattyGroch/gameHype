@@ -1,0 +1,18 @@
+<html>
+    <head>
+      {% if title %}
+      <title>{{ title }} - HYPElist</title>
+      {% else %}
+      <title>Welcome to the HYPElist</title>
+      {% endif %}
+    </head>
+    <body>
+      <center>
+        <h1>Welcome to THE LIST v3.0</h1>
+      </center>
+      <hr>
+        <div>HYPElist: <a href="/index">Home</a></div>
+      <hr>
+      {% block content %}{% endblock %}
+    </body>
+</html>

@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+
+{% block content %}
+      <p>
+        Yo, what's up {{ user.username }}?
+      </p>
+      {% for rating in ratings %}
+      <div><p>{{ rating.hypeman.username }}: <b>{{ rating.hype }}</b></p></div>
+      {% endfor %}
+{% endblock %}
