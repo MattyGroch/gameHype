@@ -1,8 +1,10 @@
-<html>
-    <head>
-        <title>The Big List of Hype</title>
-    </head>
-    <body>
-      <center><h1>Welcome to THE LIST v3.0</h1></center>
-    </body>
-</html>
+{% extends "base.html" %}
+
+{% block content %}
+      <p>
+        Yo, what's up {{ user.username }}?
+      </p>
+      {% for rating in ratings %}
+      <div><p>{{ rating.hypeman.username }}: <b>{{ rating.hype }}</b></p></div>
+      {% endfor %}
+{% endblock %}
