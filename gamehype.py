@@ -1,1 +1,0 @@
-from gamehype import app

@@ -1,1 +1,1 @@
-FLASK_APP=gamehype.py
+FLASK_APP=hypelist.py
