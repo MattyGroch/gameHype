@@ -8,3 +8,9 @@ def index():
     user = User.query.get(1)
     ratings = Rating.query.all()
     return render_template('index.html', title='Home', user=user, ratings=ratings)
+
+@app.route('/ratingtest')
+def index():
+    user = User.query.get(1)
+    ratings = Rating.query.all()
+    return render_template('index.html', title='Home', user=user, ratings=ratings)
