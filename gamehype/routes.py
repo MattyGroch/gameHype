@@ -3,12 +3,19 @@ from gamehype import app
 from gamehype.models import User, Rating
 from gamehype.forms import LoginForm
 
+
 @app.route('/')
 @app.route('/index')
 def index():
     user = User.query.get(1)
     ratings = Rating.query.all()
-    return render_template('index.html', title='Home', user=user, ratings=ratings)
+    return render_template(
+        'index.html',
+        title='Home',
+        user=user,
+        ratings=ratings
+        )
+
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
