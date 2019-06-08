@@ -1,4 +1,5 @@
-from flask import render_template, flash, redirect, url_for
+from flask import render_template, flash, redirect, url_for, request
+from werkzeug.urls import url_parse
 from flask_login import current_user, login_user, logout_user, login_required
 from gamehype import app
 from gamehype.models import User, Rating
@@ -9,15 +10,10 @@ from gamehype.forms import LoginForm
 @app.route('/index')
 @login_required
 def index():
-    if current_user.is_authenticated:
-        user = current_user
-    elif current_user.is_anonymous:
-        user = "guest"
     ratings = Rating.query.all()
     return render_template(
         'index.html',
         title='Home',
-        user=user,
         ratings=ratings
         )
 
@@ -33,7 +29,10 @@ def login():
             flash('Invalid username or password')
             return redirect(url_for('login'))
         login_user(user, remember=form.remember_me.data)
-        return redirect(url_for('index'))
+        next_page = request.args.get('next')
+        if not next_page or url_parse(next_page).netloc != '':
+            next_page = url_for('index')
+        return redirect(next_page)
     return render_template('login.html', title='Sign In', form=form)
 
 
