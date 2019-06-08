@@ -2,7 +2,7 @@
 
 {% block content %}
       <p>
-        <h3>Yo, what's up {{ user.username }}?</h3>
+        <h3>Yo, what's up {{ current_user.username }}?</h3>
       </p>
       {% for rating in ratings %}
       <div><p>{{ rating.hypeman.username }}: <b>{{ rating.hype }}</b></p></div>

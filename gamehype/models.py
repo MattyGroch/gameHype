@@ -3,6 +3,7 @@ from gamehype import db, login
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import UserMixin
 
+
 class User(UserMixin, db.Model):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(64), index=True, unique=True)
@@ -19,6 +20,7 @@ class User(UserMixin, db.Model):
     def check_password(self, password):
         return check_password_hash(self.password_hash, password)
 
+
 class Rating(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     hype = db.Column(db.Integer)
@@ -28,6 +30,7 @@ class Rating(db.Model):
 
     def __repr__(self):
         return '<Rating {}>'.format(self.hype)
+
 
 class Platform(db.Model):
     id = db.Column(db.Integer, primary_key=True)
