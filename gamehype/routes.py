@@ -17,11 +17,6 @@ def index():
         ratings=ratings
         )
 
-@app.route('/ratingtest')
-def ratingtest():
-    user = User.query.get(1)
-    ratings = Rating.query.all()
-    return render_template('ratingtest.html', title='Home', user=user, ratings=ratings)
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():
@@ -54,6 +49,14 @@ def login():
             next_page = url_for('index')
         return redirect(next_page)
     return render_template('login.html', title='Sign In', form=form)
+
+
+@app.route('/user/<username>')
+@login_required
+def user(username):
+    user = User.query.filter_by(username=username).first_or_404()
+    ratings = Rating.query.filter_by(user_id=user.id).all()
+    return render_template('user.html', ratings=ratings, user=user)
 
 
 @app.route('/logout')
