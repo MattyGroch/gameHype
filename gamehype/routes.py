@@ -17,6 +17,11 @@ def index():
         ratings=ratings
         )
 
+@app.route('/ratingtest')
+def ratingtest():
+    user = User.query.get(1)
+    ratings = Rating.query.all()
+    return render_template('ratingtest.html', title='Home', user=user, ratings=ratings)
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():
