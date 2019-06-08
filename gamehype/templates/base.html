@@ -1,34 +1,36 @@
-<html>
-    <head>
-      {% if title %}
-      <title>{{ title }} - HYPElist</title>
-      {% else %}
-      <title>The HYPElist</title>
-      {% endif %}
-    </head>
-    <body>
-      <center>
-        <h1>Welcome to THE LIST v3.0</h1>
-      </center>
-      <hr>
-        <div>HYPElist:
-          <a href="{{ url_for('index') }}">Home</a>
-          {% if current_user.is_anonymous %}
-          <a href="{{ url_for('login') }}">Login</a>
-          {% else %}
-          <a href="{{ url_for('logout') }}">Logout</a>
-          {% endif %}
+{% extends 'bootstrap/base.html' %}
+
+{% block title %}
+      {% if title %}{{ title }} - HYPElist{% else %}The HYPElist{% endif %}
+{% endblock %}
+
+{% block navbar %}
+    <nav class="navbar navbar-default">
+      <div class="container-fluid">
+        <div class="navbar-header">
+          <a class="navbar-brand" href="#">HYPElist</a>
         </div>
-      <hr>
-      {% with messages = get_flashed_messages() %}
-      {% if messages %}
-      <ul>
+        <ul class="nav navbar-nav">
+          <li class="active"><a href="{{ url_for('index') }}">Home</a></li>
+          <li><a href="{{ url_for('login') }}">Login</a></li>
+          <li><a href="{{ url_for('logout') }}">Logout</a></li>
+          <li><a href="#">Oops</a></li>
+        </ul>
+      </div>
+    </nav>
+{% endblock %}
+
+{% block content %}
+<div class="container">
+    {% with messages = get_flashed_messages() %}
+    {% if messages %}
         {% for message in messages %}
-        <li>{{ message }}</li>
+        <div class="alert alert-info" role="alert">{{ message }}</div>
         {% endfor %}
-      </ul>
-      {% endif %}
-      {% endwith %}
-      {% block content %}{% endblock %}
-    </body>
-</html>
+    {% endif %}
+    {% endwith %}
+
+    {# application content needs to be provided in the app_content block #}
+    {% block app_content %}{% endblock %}
+</div>
+{% endblock %}
