@@ -24,6 +24,7 @@ class Rating(db.Model):
     hype = db.Column(db.Integer)
     timestamp = db.Column(db.DateTime, index=True, default=datetime.utcnow)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+    game_id = db.Column(db.Integer, db.ForeignKey('game.id'))
 
     def __repr__(self):
         return '<Rating {}>'.format(self.hype)
@@ -36,6 +37,7 @@ class Game(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     game_name = db.Column(db.String(128), index=True, unique=True)
     release_date = db.Column(db.DateTime, index=True)
+    ratings = db.relationship('Rating', backref='game', lazy='dynamic')
 
     def __repr__(self):
         return '<Game {}>'.format(self.game_name)
