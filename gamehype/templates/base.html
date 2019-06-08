@@ -3,7 +3,7 @@
       {% if title %}
       <title>{{ title }} - HYPElist</title>
       {% else %}
-      <title>Welcome to the HYPElist</title>
+      <title>The HYPElist</title>
       {% endif %}
     </head>
     <body>
@@ -11,8 +11,20 @@
         <h1>Welcome to THE LIST v3.0</h1>
       </center>
       <hr>
-        <div>HYPElist: <a href="/index">Home</a></div>
+        <div>HYPElist:
+          <a href="{{ url_for('index') }}">Home</a>
+          <a href="{{ url_for('login') }}">Login</a>
+        </div>
       <hr>
+      {% with messages = get_flashed_messages() %}
+      {% if messages %}
+      <ul>
+        {% for message in messages %}
+        <li>{{ message }}</li>
+        {% endfor %}
+      </ul>
+      {% endif %}
+      {% endwith %}
       {% block content %}{% endblock %}
     </body>
 </html>
