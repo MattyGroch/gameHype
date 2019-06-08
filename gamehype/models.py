@@ -36,6 +36,7 @@ class Platform(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     platform_name = db.Column(db.String(64), index=True, unique=True)
 
+
 class Game(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     game_name = db.Column(db.String(128), index=True, unique=True)
@@ -44,6 +45,7 @@ class Game(db.Model):
 
     def __repr__(self):
         return '<Game {}>'.format(self.game_name)
+
 
 @login.user_loader
 def load_user(id):
