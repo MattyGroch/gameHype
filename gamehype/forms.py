@@ -1,5 +1,6 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, BooleanField, SubmitField
+from wtforms import StringField, PasswordField, BooleanField, SubmitField, SelectField, validators
+from wtforms.fields.html5 import DateField
 from wtforms.validators import DataRequired, ValidationError, Email, EqualTo
 from gamehype.models import User
 
@@ -28,3 +29,13 @@ class RegistrationForm(FlaskForm):
         user = User.query.filter_by(email=email.data).first()
         if user is not None:
             raise ValidationError('Please use a different email address.')
+
+
+class AddGameForm(FlaskForm):
+    game_name = StringField(
+        'Game Title',
+        [validators.required(), validators.length(min=2, max=128)]
+        )
+    release_date = DateField('Release Date', format='%d/%m/%Y')
+    genre = SelectField('Genre(s)', choices=[('Cool','Uncool')])
+    submit = SubmitField('Submit')

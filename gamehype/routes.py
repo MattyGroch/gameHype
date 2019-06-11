@@ -3,7 +3,7 @@ from werkzeug.urls import url_parse
 from flask_login import current_user, login_user, logout_user, login_required
 from gamehype import app, db
 from gamehype.models import User, Rating
-from gamehype.forms import LoginForm, RegistrationForm
+from gamehype.forms import LoginForm, RegistrationForm, AddGameForm
 
 
 @app.route('/')
@@ -57,6 +57,13 @@ def user(username):
     user = User.query.filter_by(username=username).first_or_404()
     ratings = Rating.query.filter_by(user_id=user.id).all()
     return render_template('user.html', ratings=ratings, user=user)
+
+
+@app.route('/add_game', methods=['GET', 'POST'])
+@login_required
+def add_game():
+    form = AddGameForm()
+    return render_template('add_game.html', title='Add a Game', form=form)
 
 
 @app.route('/logout')
