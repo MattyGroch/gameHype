@@ -56,6 +56,8 @@ class Game(db.Model):
 
     platforms = db.relationship('Platform', secondary="platform_games", lazy='dynamic')
 
+    genres = db.relationship('Genre', secondary="genre_games", lazy='dynamic')
+
     def __repr__(self):
         return '<Game {}>'.format(self.game_name)
 
@@ -64,14 +66,39 @@ class Game(db.Model):
 
     def add_platform(self, platform):
         if not self.on_platform(platform):
-            self.platforms.appened(platform)
+            self.platforms.append(platform)
 
     def remove_platform(self, platform):
         if self.on_platform(platform):
             self.platforms.remove(platform)
 
+    def check_genre(self, genre):
+        return self.genres.filter(genre_games.c.genre_id == genre.id).count() > 0
+
+    def add_genre(self, genre):
+        if not self.check_genre(genre):
+            self.genres.append(genre)
+
+    def remove_genre(self, genre):
+        if self.check_genre(genre):
+            self.genres.remove(genre)
+
+class Genre(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    genre_name = db.Column(db.String(64), index=True, unique=True)
+
+    games = db.relationship('Game', secondary="genre_games", lazy='dynamic')
+
+    def __repr__(self):
+        return '<Genre {}>'.format(self.genre_name)
+
 platform_games = db.Table('platform_games',
     db.Column('platform_id', db.Integer, db.ForeignKey('platform.id')),
+    db.Column('game_id', db.Integer, db.ForeignKey('game.id'))
+    )
+
+genre_games = db.Table('genre_games',
+    db.Column('genre_id', db.Integer, db.ForeignKey('genre.id')),
     db.Column('game_id', db.Integer, db.ForeignKey('game.id'))
     )
 
