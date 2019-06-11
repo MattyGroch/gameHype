@@ -12,11 +12,14 @@
         </div>
         <ul class="nav navbar-nav">
           <li class="active"><a href="{{ url_for('index') }}">Home</a></li>
+        </ul>
+        <ul class="nav navbar-nav navbar-right">
           {% if current_user.is_anonymous %}
-          <li><a href="{{ url_for('login') }}">Login</a></li>
+          <li><a href="{{ url_for('register') }}"><span class="glyphicon glyphicon-user"></span> Register</a></li>
+          <li><a href="{{ url_for('login') }}"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
           {% else %}
-          <li><a href="{{ url_for('user', username=current_user.username) }}">Profile</a></li>
-          <li><a href="{{ url_for('logout') }}">Logout</a></li>
+          <li><a href="{{ url_for('user', username=current_user.username) }}"><span class="glyphicon glyphicon-user"></span> My Profile</a></li>
+          <li><a href="{{ url_for('logout') }}"><span class="glyphicon glyphicon-log-out"></span> Logout</a></li>
           {% endif %}
         </ul>
       </div>
