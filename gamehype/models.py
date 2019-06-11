@@ -42,7 +42,10 @@ class Platform(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     platform_name = db.Column(db.String(64), index=True, unique=True)
 
-    games = db.relationship('Game', secondary="platform_games", backref='platforms', lazy='dynamic')
+    games = db.relationship('Game', secondary="platform_games", lazy='dynamic')
+
+    def __repr__(self):
+        return '<Platform {}>'.format(self.platform_name)
 
 
 class Game(db.Model):
@@ -51,14 +54,25 @@ class Game(db.Model):
     release_date = db.Column(db.DateTime, index=True)
     ratings = db.relationship('Rating', backref='game', lazy='dynamic')
 
-    platforms = db.relationship('Platform', secondary="platform_games", backref='games', lazy='dynamic')
+    platforms = db.relationship('Platform', secondary="platform_games", lazy='dynamic')
 
     def __repr__(self):
         return '<Game {}>'.format(self.game_name)
 
+    def on_platform(self, platform):
+        return self.platforms.filter(platform_games.c.platform_id == platform.id).count() > 0
+
+    def add_platform(self, platform):
+        if not self.on_platform(platform):
+            self.platforms.appened(platform)
+
+    def remove_platform(self, platform):
+        if self.on_platform(platform):
+            self.platforms.remove(platform)
+
 platform_games = db.Table('platform_games',
     db.Column('platform_id', db.Integer, db.ForeignKey('platform.id')),
-    db.Column('game.id', db.Integer, db.ForeignKey('game.id'))
+    db.Column('game_id', db.Integer, db.ForeignKey('game.id'))
     )
 
 @login.user_loader
