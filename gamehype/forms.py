@@ -50,7 +50,7 @@ class AddGameForm(FlaskForm):
         )
     submit = SubmitField('Submit')
 
-    def validate_game_title(self, game_name):
+    def validate_game_name(self, game_name):
         game_name = Game.query.filter_by(game_name=game_name.data).first()
         if game_name is not None:
             raise ValidationError('That game is already on the list.')
