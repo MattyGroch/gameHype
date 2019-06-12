@@ -9,7 +9,7 @@ from wtforms import (
     )
 from wtforms.fields.html5 import DateField
 from wtforms.validators import DataRequired, ValidationError, Email, EqualTo
-from gamehype.models import User
+from gamehype.models import User, Game
 
 
 class LoginForm(FlaskForm):
@@ -43,9 +43,14 @@ class AddGameForm(FlaskForm):
         'Game Title',
         [validators.required(), validators.length(min=2, max=128)]
         )
-    release_date = DateField('Release Date', format='%d/%m/%Y')
+    release_date = DateField('Release Date', format='%Y-%m-%d')
     genre = SelectField(
         'Genre(s)',
         choices=[('Cool', 'Cool'), ('Uncool', 'Uncool')]
         )
     submit = SubmitField('Submit')
+
+    def validate_game_title(self, game_name):
+        game_name = Game.query.filter_by(game_name=game_name.data).first()
+        if game_name is not None:
+            raise ValidationError('That game is already on the list.')

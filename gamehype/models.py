@@ -70,10 +70,12 @@ class Game(db.Model):
         if self.on_platform(platform):
             self.platforms.remove(platform)
 
+
 platform_games = db.Table('platform_games',
     db.Column('platform_id', db.Integer, db.ForeignKey('platform.id')),
     db.Column('game_id', db.Integer, db.ForeignKey('game.id'))
     )
+
 
 @login.user_loader
 def load_user(id):
