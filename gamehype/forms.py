@@ -1,5 +1,12 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, BooleanField, SubmitField, SelectField, validators
+from wtforms import (
+    StringField,
+    PasswordField,
+    BooleanField,
+    SubmitField,
+    SelectField,
+    validators
+    )
 from wtforms.fields.html5 import DateField
 from wtforms.validators import DataRequired, ValidationError, Email, EqualTo
 from gamehype.models import User
@@ -37,5 +44,8 @@ class AddGameForm(FlaskForm):
         [validators.required(), validators.length(min=2, max=128)]
         )
     release_date = DateField('Release Date', format='%d/%m/%Y')
-    genre = SelectField('Genre(s)', choices=[('Cool','Uncool')])
+    genre = SelectField(
+        'Genre(s)',
+        choices=[('Cool', 'Cool'), ('Uncool', 'Uncool')]
+        )
     submit = SubmitField('Submit')

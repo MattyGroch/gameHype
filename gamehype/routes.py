@@ -8,7 +8,6 @@ from gamehype.forms import LoginForm, RegistrationForm, AddGameForm
 
 @app.route('/')
 @app.route('/index')
-@login_required
 def index():
     ratings = Rating.query.all()
     return render_template(
