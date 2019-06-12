@@ -58,8 +58,8 @@ class Game(db.Model):
 
     genres = db.relationship('Genre', secondary="genre_games", lazy='dynamic')
 
-    developers = db.Relationship('Developer', secondary="developer_games", lazy='dynamic')
-    publishers = db.Relationship('Publisher', secondary="publisher_games", lazy='dynamic')
+    developers = db.relationship('Developer', secondary="developer_games", lazy='dynamic')
+    publishers = db.relationship('Publisher', secondary="publisher_games", lazy='dynamic')
 
     def __repr__(self):
         return '<Game {}>'.format(self.game_name)
