@@ -84,7 +84,8 @@ def add_game():
         game_name = form.game_name.data
         game = Game(
             game_name=form.game_name.data,
-            release_date=form.release_date.data
+            release_date=form.release_date.data,
+            genres=form.genres.data
             )
         db.session.add(game)
         db.session.commit()

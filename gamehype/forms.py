@@ -5,11 +5,12 @@ from wtforms import (
     BooleanField,
     SubmitField,
     SelectField,
+    SelectMultipleField,
     validators
     )
 from wtforms.fields.html5 import DateField
 from wtforms.validators import DataRequired, ValidationError, Email, EqualTo
-from gamehype.models import User, Game
+from gamehype.models import User, Game, Genre, Company, Platform
 
 
 class LoginForm(FlaskForm):
@@ -44,13 +45,13 @@ class AddGameForm(FlaskForm):
         validators=[DataRequired(), validators.length(min=2, max=128)]
         )
     release_date = DateField('Release Date', format='%Y-%m-%d')
-    genre = SelectField(
+    genres = SelectMultipleField(
         'Genre(s)',
-        choices=[('Cool', 'Cool'), ('Uncool', 'Uncool')]
+        choices=[(genre.id, genre.genre_name) for genre in Genre.query.all()]
         )
     submit = SubmitField('Submit')
 
     def validate_game_name(self, game_name):
-        game_name = Game.query.filter_by(game_name=game_name.data).first()
+        game_name=Game.query.filter_by(game_name=game_name.data).first()
         if game_name is not None:
             raise ValidationError('That game is already on the list.')
