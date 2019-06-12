@@ -41,7 +41,7 @@ class RegistrationForm(FlaskForm):
 class AddGameForm(FlaskForm):
     game_name = StringField(
         'Game Title',
-        [validators.required(), validators.length(min=2, max=128)]
+        validators=[DataRequired(), validators.length(min=2, max=128)]
         )
     release_date = DateField('Release Date', format='%Y-%m-%d')
     genre = SelectField(
