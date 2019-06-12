@@ -47,7 +47,8 @@ class AddGameForm(FlaskForm):
     release_date = DateField('Release Date', format='%Y-%m-%d')
     genres = SelectMultipleField(
         'Genre(s)',
-        choices=[(genre.id, genre.genre_name) for genre in Genre.query.all()]
+        choices=[(genre.id, genre.genre_name) for genre in Genre.query.all()],
+        coerce=int
         )
     submit = SubmitField('Submit')
 

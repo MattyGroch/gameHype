@@ -2,7 +2,7 @@ from flask import render_template, flash, redirect, url_for, request
 from werkzeug.urls import url_parse
 from flask_login import current_user, login_user, logout_user, login_required
 from gamehype import app, db
-from gamehype.models import User, Rating, Game
+from gamehype.models import User, Rating, Game, Genre
 from gamehype.forms import LoginForm, RegistrationForm, AddGameForm
 
 
@@ -85,9 +85,9 @@ def add_game():
         game = Game(
             game_name=form.game_name.data,
             release_date=form.release_date.data,
-            genres=form.genres.data
             )
-        db.session.add(game)
+        genre = Genre(id=form.genres.data)
+        db.session.add(game,game.add_genre(genre))
         db.session.commit()
         flash('Congratulations, ' + game_name + ' has been added!')
         return redirect(url_for('games'))
