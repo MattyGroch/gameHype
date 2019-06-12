@@ -58,18 +58,21 @@ class Game(db.Model):
 
     genres = db.relationship('Genre', secondary="genre_games", lazy='dynamic')
 
+    developers = db.relationship('Company', secondary="developer_games", lazy='dynamic')
+    publishers = db.relationship('Company', secondary="publisher_games", lazy='dynamic')
+
     def __repr__(self):
         return '<Game {}>'.format(self.game_name)
 
-    def on_platform(self, platform):
+    def check_platform(self, platform):
         return self.platforms.filter(platform_games.c.platform_id == platform.id).count() > 0
 
     def add_platform(self, platform):
-        if not self.on_platform(platform):
+        if not self.check_platform(platform):
             self.platforms.append(platform)
 
     def remove_platform(self, platform):
-        if self.on_platform(platform):
+        if self.check_platform(platform):
             self.platforms.remove(platform)
 
     def check_genre(self, genre):
@@ -83,6 +86,28 @@ class Game(db.Model):
         if self.check_genre(genre):
             self.genres.remove(genre)
 
+    def check_developer(self, company):
+        return self.developers.filter(developer_games.c.developer_id == company.id).count() > 0
+
+    def add_developer(self, company):
+        if not self.check_developer(company):
+            self.developers.append(company)
+
+    def remove_developer(self, company):
+        if self.check_developer(company):
+            self.developers.remove(developer)
+
+    def check_publisher(self, company):
+        return self.publishers.filter(publisher_games.c.publisher_id == company.id).count() > 0
+
+    def add_publisher(self, company):
+        if not self.check_publisher(company):
+            self.publishers.append(company)
+
+    def remove_publisher(self, company):
+        if self.check_publisher(company):
+            self.publishers.remove(company)
+
 class Genre(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     genre_name = db.Column(db.String(64), index=True, unique=True)
@@ -92,6 +117,16 @@ class Genre(db.Model):
     def __repr__(self):
         return '<Genre {}>'.format(self.genre_name)
 
+class Company(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    company_name = db.Column(db.String(128), index=True, unique=True)
+
+    developed = db.relationship('Game', secondary="developer_games", lazy='dynamic')
+    published = db.relationship('Game', secondary="publisher_games", lazy='dynamic')
+
+    def __repr__(self):
+        return '<Company {}>'.format(self.company_name)
+
 platform_games = db.Table('platform_games',
     db.Column('platform_id', db.Integer, db.ForeignKey('platform.id')),
     db.Column('game_id', db.Integer, db.ForeignKey('game.id'))
@@ -99,6 +134,16 @@ platform_games = db.Table('platform_games',
 
 genre_games = db.Table('genre_games',
     db.Column('genre_id', db.Integer, db.ForeignKey('genre.id')),
+    db.Column('game_id', db.Integer, db.ForeignKey('game.id'))
+    )
+
+developer_games = db.Table('developer_games',
+    db.Column('developer_id', db.Integer, db.ForeignKey('company.id')),
+    db.Column('game_id', db.Integer, db.ForeignKey('game.id'))
+    )
+
+publisher_games = db.Table('publisher_games',
+    db.Column('publisher_id', db.Integer, db.ForeignKey('company.id')),
     db.Column('game_id', db.Integer, db.ForeignKey('game.id'))
     )
 
