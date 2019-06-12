@@ -86,10 +86,12 @@ def add_game():
             game_name=form.game_name.data,
             release_date=form.release_date.data,
             )
-        genre = Genre(id=form.genres.data)
+        genres = form.genres.data
         db.session.add(game)
         db.session.commit()
-        db.session.add(game.add_genre(genre))
+        for g in genres:
+            genre = Genre.query.get(g)
+            game.add_genre(genre)
         db.session.commit()
         flash('Congratulations, ' + game_name + ' has been added!')
         return redirect(url_for('games'))
