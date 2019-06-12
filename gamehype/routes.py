@@ -2,19 +2,36 @@ from flask import render_template, flash, redirect, url_for, request
 from werkzeug.urls import url_parse
 from flask_login import current_user, login_user, logout_user, login_required
 from gamehype import app, db
-from gamehype.models import User, Rating
-from gamehype.forms import LoginForm, RegistrationForm
+from gamehype.models import User, Rating, Game
+from gamehype.forms import LoginForm, RegistrationForm, AddGameForm
 
 
 @app.route('/')
 @app.route('/index')
-@login_required
 def index():
-    ratings = Rating.query.all()
     return render_template(
         'index.html',
         title='Home',
+        )
+
+
+@app.route('/ratings')
+def ratings():
+    ratings = Rating.query.all()
+    return render_template(
+        'ratings.html',
+        title='Ratings',
         ratings=ratings
+        )
+
+
+@app.route('/games')
+def games():
+    games = Game.query.all()
+    return render_template(
+        'games.html',
+        title='Game List',
+        games=games
         )
 
 
@@ -57,6 +74,23 @@ def user(username):
     user = User.query.filter_by(username=username).first_or_404()
     ratings = Rating.query.filter_by(user_id=user.id).all()
     return render_template('user.html', ratings=ratings, user=user)
+
+
+@app.route('/add_game', methods=['GET', 'POST'])
+@login_required
+def add_game():
+    form = AddGameForm()
+    if form.validate_on_submit():
+        game_name = form.game_name.data
+        game = Game(
+            game_name=form.game_name.data,
+            release_date=form.release_date.data
+            )
+        db.session.add(game)
+        db.session.commit()
+        flash('Congratulations, ' + game_name + ' has been added!')
+        return redirect(url_for('games'))
+    return render_template('add_game.html', title='Add a Game', form=form)
 
 
 @app.route('/logout')

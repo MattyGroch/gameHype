@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+
+{% block app_content %}
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-md-5">
+      <p>
+        {% if current_user.is_anonymous %}
+        <h1 class="display-4">Yo, what's up guest?</h1>
+        {% else %}
+        <h1 class="display-4">Yo, what's up {{ current_user.username }}? Check out the games.</h1>
+        {% endif %}
+      </p>
+    </div>
+  </div>
+</div>
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-md-12">
+      <table class="table table-striped table-hover table-sm" id="gamehype_table">
+        <thead class="thead-dark">
+          <tr>
+            <th scope="col">Game Title</th>
+            <th scope="col">Release Date</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for game in games %}
+          <tr>
+            <th scope="row">{{ game.game_name }}</th>
+            <td>{{ game.release_date }}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+{% endblock %}
