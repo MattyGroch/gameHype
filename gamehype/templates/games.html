@@ -30,7 +30,11 @@
           {% for game in games %}
           <tr>
             <th scope="row">{{ game.game_name }}</th>
-            <td>{{ game.genres.all() }}</td>
+            <td>
+              {% for g in game.genres.all() %}
+              <span class="label label-default">{{ g.genre_name }}</span>
+              {% endfor %}
+            </td>
             <td>{{ game.release_date }}</td>
           </tr>
           {% endfor %}
