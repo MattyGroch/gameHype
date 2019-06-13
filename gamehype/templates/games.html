@@ -35,7 +35,7 @@
               <span class="label label-default">{{ g.genre_name }}</span>
               {% endfor %}
             </td>
-            <td>{{ game.release_date }}</td>
+            <td>{{ moment(game.release_date).format('L') }}</td>
           </tr>
           {% endfor %}
         </tbody>

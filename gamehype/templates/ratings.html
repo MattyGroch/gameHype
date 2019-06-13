@@ -31,7 +31,7 @@
           {% for rating in ratings %}
           <tr>
             <th scope="row">{{ rating.game.game_name }}</th>
-            <td>{{ rating.game.release_date }}</td>
+            <td>{{ moment(rating.game.release_date).format('L') }}</td>
             <td>{{ rating.hypeman.username }}</td>
             <td>{{ rating.hype }}</td>
           </tr>
