@@ -93,7 +93,7 @@ def edit_game(game_id):
         form.game_name.data = game.game_name
         form.release_date.data = game.release_date
         form.platforms.data = [platform.id for platform in game.platforms.all()]
-        form.genres.data = [genre.id for genre in game.genres.all()]  #this doesnt work, but i was trying things other than game.genres
+        form.genres.data = [genre.id for genre in game.genres.all()]
 
     return render_template('edit_game.html', game=game, form=form)
 
