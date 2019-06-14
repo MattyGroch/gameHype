@@ -4,7 +4,7 @@
 <table>
   <tr valign="top">
     <td>
-      <h1> {{ game.game_name }}</h1>
+      <h1> {{ game.game_name }} <small>{{ moment(game.release_date).format('L') }}</small></h1>
     </td>
   </tr>
 
