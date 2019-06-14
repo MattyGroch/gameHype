@@ -3,14 +3,12 @@
 {% block app_content %}
 <div class="container-fluid">
   <div class="row">
-    <div class="col-md-5">
-      <p>
-        {% if current_user.is_anonymous %}
-        <h1 class="display-4">Yo, what's up guest?</h1>
-        {% else %}
-        <h1 class="display-4">Yo, what's up {{ current_user.username }}?</h1>
-        {% endif %}
-      </p>
+    <div class="col-md-12">
+      <div class="jumbotron">
+        <h1>Hello, {% if current_user.is_anonymous %}guest{% else %}{{ current_user.username }}{% endif %}!</h1>
+        <p>Thanks for checking out the HYPETRAIN. This is a garbage app made by babies. Good luck.</p>
+        <p><a class="btn btn-primary btn-lg" href="{{ url_for('games') }}" role="button">Check out the games</a></p>
+      </div>
     </div>
   </div>
 </div>
