@@ -5,11 +5,7 @@
   <div class="row">
     <div class="col-md-5">
       <p>
-        {% if current_user.is_anonymous %}
-        <h1 class="display-4">Yo, what's up guest?</h1>
-        {% else %}
-        <h1 class="display-4">Yo, what's up {{ current_user.username }}? Check out the games.</h1>
-        {% endif %}
+        <h1 class="display-4">Game List</h1>
       </p>
     </div>
   </div>
@@ -22,14 +18,26 @@
         <thead class="thead-dark">
           <tr>
             <th scope="col">Game Title</th>
+            <th scope="col">Platform(s)</th>
             <th scope="col">Release Date</th>
+            <th scope="col">Genre(s)</th>
           </tr>
         </thead>
         <tbody>
           {% for game in games %}
           <tr>
             <th scope="row">{{ game.game_name }}</th>
-            <td>{{ game.release_date }}</td>
+            <td>
+              {% for g in game.platforms.all() %}
+              <span class="label label-primary">{{ g.platform_name }}</span>
+              {% endfor %}
+            </td>
+            <td>{{ moment(game.release_date).format('L') }}</td>
+            <td>
+              {% for g in game.genres.all() %}
+              <span class="label label-default">{{ g.genre_name }}</span>
+              {% endfor %}
+            </td>
           </tr>
           {% endfor %}
         </tbody>

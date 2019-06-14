@@ -95,7 +95,7 @@ class Game(db.Model):
 
     def remove_developer(self, company):
         if self.check_developer(company):
-            self.developers.remove(developer)
+            self.developers.remove(company)
 
     def check_publisher(self, company):
         return self.publishers.filter(publisher_games.c.publisher_id == company.id).count() > 0

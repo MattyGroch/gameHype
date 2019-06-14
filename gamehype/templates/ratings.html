@@ -5,11 +5,7 @@
   <div class="row">
     <div class="col-md-5">
       <p>
-        {% if current_user.is_anonymous %}
-        <h1 class="display-4">Yo, what's up guest?</h1>
-        {% else %}
-        <h1 class="display-4">Yo, what's up {{ current_user.username }}? Check out the hype.</h1>
-        {% endif %}
+        <h1 class="display-4">Hype Index</h1>
       </p>
     </div>
   </div>
@@ -31,7 +27,7 @@
           {% for rating in ratings %}
           <tr>
             <th scope="row">{{ rating.game.game_name }}</th>
-            <td>{{ rating.game.release_date }}</td>
+            <td>{{ moment(rating.game.release_date).format('L') }}</td>
             <td>{{ rating.hypeman.username }}</td>
             <td>{{ rating.hype }}</td>
           </tr>

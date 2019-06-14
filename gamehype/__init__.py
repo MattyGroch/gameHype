@@ -4,6 +4,7 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 from flask_login import LoginManager
 from flask_bootstrap import Bootstrap
+from flask_moment import Moment
 import logging
 from logging.handlers import SMTPHandler, RotatingFileHandler
 import os
@@ -46,5 +47,7 @@ app.logger.addHandler(file_handler)
 
 app.logger.setLevel(logging.INFO)
 app.logger.info('HYPElist startup')
+
+moment = Moment(app)
 
 from gamehype import routes, models, errors
