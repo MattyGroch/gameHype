@@ -75,6 +75,11 @@ def user(username):
     ratings = Rating.query.filter_by(user_id=user.id).all()
     return render_template('user.html', ratings=ratings, user=user)
 
+@app.route('/game/<game_id>')
+def game(game_id):
+    game = Game.query.get(game_id)
+    return render_template('game.html', game=game)
+
 
 @app.route('/add_game', methods=['GET', 'POST'])
 @login_required
