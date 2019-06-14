@@ -28,10 +28,12 @@ def ratings():
 @app.route('/games')
 def games():
     games = Game.query.all()
+    user = current_user
     return render_template(
         'games.html',
         title='Game List',
-        games=games
+        games=games,
+        user=user
         )
 
 
