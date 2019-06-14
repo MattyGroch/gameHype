@@ -18,26 +18,36 @@
         <thead class="thead-dark">
           <tr>
             <th scope="col">Game Title</th>
-            <th scope="col">Platform(s)</th>
+            <th scope="col" class="text-center">Platform(s)</th>
             <th scope="col">Release Date</th>
-            <th scope="col">Genre(s)</th>
+            <th scope="col" class="text-center">Genre(s)</th>
+            {% if current_user.is_anonymous %}
+            {% else %}
+            <th scope="col">My Hype Level</th>
+            {% endif %}
           </tr>
         </thead>
         <tbody>
           {% for game in games %}
           <tr>
             <th scope="row"><a href="{{ url_for('game', game_id=game.id) }}">{{ game.game_name }}<a></th>
-            <td>
+            <td align="center">
               {% for g in game.platforms.all() %}
               <span class="label label-primary">{{ g.platform_name }}</span>
               {% endfor %}
             </td>
             <td>{{ moment(game.release_date).format('L') }}</td>
-            <td>
+            <td align="center">
               {% for g in game.genres.all() %}
               <span class="label label-default">{{ g.genre_name }}</span>
               {% endfor %}
             </td>
+            {% if current_user.is_anonymous %}
+            {% else %}
+            <td>
+              {{ game.ratings.filter_by(user_id=user.id).first().hype }}
+            </td>
+            {% endif %}
           </tr>
           {% endfor %}
         </tbody>
