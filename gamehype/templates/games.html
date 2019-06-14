@@ -21,6 +21,10 @@
             <th scope="col" class="text-center">Platform(s)</th>
             <th scope="col">Release Date</th>
             <th scope="col" class="text-center">Genre(s)</th>
+            {% if current_user.is_anonymous %}
+            {% else %}
+            <th scope="col">My Hype Level</th>
+            {% endif %}
           </tr>
         </thead>
         <tbody>
@@ -38,6 +42,12 @@
               <span class="label label-default">{{ g.genre_name }}</span>
               {% endfor %}
             </td>
+            {% if current_user.is_anonymous %}
+            {% else %}
+            <td>
+              {{ USER'S RATING }}
+            </td>
+            {% endif %}
           </tr>
           {% endfor %}
         </tbody>
