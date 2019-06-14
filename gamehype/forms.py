@@ -45,6 +45,14 @@ class AddGameForm(FlaskForm):
         validators=[DataRequired(), validators.length(min=2, max=128)]
         )
     release_date = DateField('Release Date', format='%Y-%m-%d')
+    platforms = SelectMultipleField(
+        'Platform(s)',
+        choices=[(
+            platform.id,
+            platform.platform_name
+            ) for platform in Platform.query.all()],
+        coerce=int
+        )
     genres = SelectMultipleField(
         'Genre(s)',
         choices=[(genre.id, genre.genre_name) for genre in Genre.query.all()],
@@ -53,6 +61,6 @@ class AddGameForm(FlaskForm):
     submit = SubmitField('Submit')
 
     def validate_game_name(self, game_name):
-        game_name=Game.query.filter_by(game_name=game_name.data).first()
+        game_name = Game.query.filter_by(game_name=game_name.data).first()
         if game_name is not None:
             raise ValidationError('That game is already on the list.')
