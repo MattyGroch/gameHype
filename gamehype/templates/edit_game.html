@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% import 'bootstrap/wtf.html' as wtf %}
+
+{% block app_content %}
+<table>
+  <tr valign="top">
+    <td>
+      <h1> {{ game.game_name }}</h1>
+    </td>
+  </tr>
+
+</table>
+<h2>
+  <font color="red">ONLY THE NAME AND RELEASE DATE EDITING FUNCTIONALITY CURRENTLY WORKS</font>
+</h2>
+<div class="row">
+  <div class="col-md-4">
+    {{ wtf.quick_form(form) }}
+  </div>
+</div>
+
+{% endblock %}

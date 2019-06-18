@@ -3,7 +3,7 @@ from werkzeug.urls import url_parse
 from flask_login import current_user, login_user, logout_user, login_required
 from gamehype import app, db
 from gamehype.models import User, Rating, Game, Genre, Platform
-from gamehype.forms import LoginForm, RegistrationForm, AddGameForm
+from gamehype.forms import LoginForm, RegistrationForm, AddGameForm, EditGameForm
 
 
 @app.route('/')
@@ -28,10 +28,12 @@ def ratings():
 @app.route('/games')
 def games():
     games = Game.query.all()
+    user = current_user
     return render_template(
         'games.html',
         title='Game List',
-        games=games
+        games=games,
+        user=user
         )
 
 
@@ -74,6 +76,28 @@ def user(username):
     user = User.query.filter_by(username=username).first_or_404()
     ratings = Rating.query.filter_by(user_id=user.id).all()
     return render_template('user.html', ratings=ratings, user=user)
+
+@app.route('/game/<game_id>')
+def game(game_id):
+    game = Game.query.get(game_id)
+    return render_template('game.html', game=game)
+
+@app.route('/editgame/<game_id>', methods=['GET', 'POST'])
+def edit_game(game_id):
+    game = Game.query.get(game_id)
+    form = EditGameForm()
+    if form.validate_on_submit():
+        game.game_name = form.game_name.data
+        game.release_date = form.release_date.data
+        db.session.commit()
+        return redirect(url_for('game', game_id=game.id))
+    elif request.method == 'GET':
+        form.game_name.data = game.game_name
+        form.release_date.data = game.release_date
+        form.platforms.data = [platform.id for platform in game.platforms.all()]
+        form.genres.data = [genre.id for genre in game.genres.all()]
+
+    return render_template('edit_game.html', game=game, form=form)
 
 
 @app.route('/add_game', methods=['GET', 'POST'])
