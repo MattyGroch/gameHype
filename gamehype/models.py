@@ -64,6 +64,24 @@ class Game(db.Model):
     def __repr__(self):
         return '<Game {}>'.format(self.game_name)
 
+    def update_lists(self, newlist, attribute_str, class_str):
+        #define set of old attributes
+        oldset = set(getattr(self, attribute_str).all())
+        #define set of new attributes
+        newset = set()
+        for i in newlist:
+            o = eval(class_str).query.get(i)
+            newset.add(o)
+        #find differences
+        to_remove = oldset - newset
+        to_add = newset - oldset
+        #remove outdated entries
+        for i in to_remove:
+            getattr(self, attribute_str).remove(i)
+        #add new entries
+        for i in to_add:
+            getattr(self, attribute_str).append(i)
+
     def check_platform(self, platform):
         return self.platforms.filter(platform_games.c.platform_id == platform.id).count() > 0
 
