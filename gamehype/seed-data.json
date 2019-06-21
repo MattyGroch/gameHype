@@ -1,0 +1,15 @@
+{
+  "genres": [
+    "First-Person Shooter",
+    "Racing",
+    "Sports",
+    "Party",
+    "Battle Royale"
+  ],
+  "platforms": [
+    "Xbox One",
+    "Playstation 4",
+    "PC",
+    "Switch"
+  ]
+}
