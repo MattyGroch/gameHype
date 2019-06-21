@@ -89,6 +89,8 @@ def edit_game(game_id):
     if form.validate_on_submit():
         game.game_name = form.game_name.data
         game.release_date = form.release_date.data
+        game.update_lists(form.genres.data, 'genres', 'Genre')
+        game.update_lists(form.platforms.data, 'platforms', 'Platform')
         db.session.commit()
         return redirect(url_for('game', game_id=game.id))
     elif request.method == 'GET':
