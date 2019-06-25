@@ -10,6 +10,7 @@ from wtforms import (
     )
 from wtforms.fields.html5 import DateField
 from wtforms.validators import DataRequired, ValidationError, Email, EqualTo
+from wtforms.ext.sqlalchemy.fields import QuerySelectMultipleField
 from gamehype.models import User, Game, Genre, Company, Platform
 
 
@@ -45,25 +46,15 @@ class AddGameForm(FlaskForm):
         validators=[DataRequired(), validators.length(min=2, max=128)]
         )
     release_date = DateField('Release Date', format='%Y-%m-%d')
-    platforms = SelectMultipleField(
-        'Platform(s)',
-        choices=[(
-            platform.id,
-            platform.platform_name
-            ) for platform in Platform.query.all()],
-        coerce=int
-        )
-    genres = SelectMultipleField(
-        'Genre(s)',
-        choices=[(genre.id, genre.genre_name) for genre in Genre.query.all()],
-        coerce=int
-        )
+    platforms = QuerySelectMultipleField(get_label='platform_name', query_factory=lambda: Platform.query.all())
+    genres = QuerySelectMultipleField(get_label='genre_name', query_factory=lambda: Genre.query.all())
+
     submit = SubmitField('Submit')
 
-    def validate_game_name(self, game_name):
-        game_name = Game.query.filter_by(game_name=game_name.data).first()
-        if game_name is not None:
-            raise ValidationError('That game is already on the list.')
+def validate_game_name(self, game_name):
+    game_name = Game.query.filter_by(game_name=game_name.data).first()
+    if game_name is not None:
+        raise ValidationError('That game is already on the list.')
 
 class EditGameForm(FlaskForm):
     game_name = StringField(
@@ -71,17 +62,7 @@ class EditGameForm(FlaskForm):
         validators=[DataRequired(), validators.length(min=2, max=128)]
         )
     release_date = DateField('Release Date', format='%Y-%m-%d')
-    platforms = SelectMultipleField(
-        'Platform(s)',
-        choices=[(
-            platform.id,
-            platform.platform_name
-            ) for platform in Platform.query.all()],
-        coerce=int
-        )
-    genres = SelectMultipleField(
-        'Genre(s)',
-        choices=[(genre.id, genre.genre_name) for genre in Genre.query.all()],
-        coerce=int
-        )
+    platforms = QuerySelectMultipleField(get_label='platform_name', query_factory=lambda: Platform.query.all())
+    genres = QuerySelectMultipleField(get_label='genre_name', query_factory=lambda: Genre.query.all())
+    
     submit = SubmitField('Submit')
