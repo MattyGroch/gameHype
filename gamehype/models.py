@@ -64,14 +64,11 @@ class Game(db.Model):
     def __repr__(self):
         return '<Game {}>'.format(self.game_name)
 
-    def update_lists(self, newlist, attribute_str, class_str):
+    def update_lists(self, newlist, attribute_str):
         #define set of old attributes
         oldset = set(getattr(self, attribute_str).all())
         #define set of new attributes
-        newset = set()
-        for i in newlist:
-            o = eval(class_str).query.get(i)
-            newset.add(o)
+        newset = set(newlist)
         #find differences
         to_remove = oldset - newset
         to_add = newset - oldset
