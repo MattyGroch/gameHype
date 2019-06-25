@@ -132,13 +132,13 @@ def add_game():
 @app.route('/seed')
 def seed_db():
     if not Game.query.all() and not Genre.query.all() and not Platform.query.all():
-        with open('seed-data.json') as seedfile:
+        with open('gamehype/seed-data.json') as seedfile:
             data = json.loads(seedfile.read())
             for g in data['genres']:
-                genre = Genre(g)
+                genre = Genre(genre_name=g)
                 db.session.add(genre)
             for p in data['platforms']:
-                plat = Platform(p)
+                plat = Platform(platform_name=p)
                 db.session.add(plat)
             db.session.commit()
     return redirect('/games')
