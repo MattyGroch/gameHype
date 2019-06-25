@@ -1,3 +1,5 @@
+import json
+
 from flask import render_template, flash, redirect, url_for, request
 from werkzeug.urls import url_parse
 from flask_login import current_user, login_user, logout_user, login_required
@@ -125,6 +127,21 @@ def add_game():
         flash('Congratulations, ' + game_name + ' has been added!')
         return redirect(url_for('games'))
     return render_template('add_game.html', title='Add a Game', form=form)
+
+
+@app.route('/seed')
+def seed_db():
+    if not Game.query.all() and not Genre.query.all() and not Platform.query.all():
+        with open('gamehype/seed-data.json') as seedfile:
+            data = json.loads(seedfile.read())
+            for g in data['genres']:
+                genre = Genre(genre_name=g)
+                db.session.add(genre)
+            for p in data['platforms']:
+                plat = Platform(platform_name=p)
+                db.session.add(plat)
+            db.session.commit()
+    return redirect('/games')
 
 
 @app.route('/logout')
