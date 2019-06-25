@@ -91,15 +91,15 @@ def edit_game(game_id):
     if form.validate_on_submit():
         game.game_name = form.game_name.data
         game.release_date = form.release_date.data
-        game.update_lists(form.genres.data, 'genres', 'Genre')
-        game.update_lists(form.platforms.data, 'platforms', 'Platform')
+        game.update_lists(form.genres.data, 'genres')
+        game.update_lists(form.platforms.data, 'platforms')
         db.session.commit()
         return redirect(url_for('game', game_id=game.id))
     elif request.method == 'GET':
         form.game_name.data = game.game_name
         form.release_date.data = game.release_date
-        form.platforms.data = [platform.id for platform in game.platforms.all()]
-        form.genres.data = [genre.id for genre in game.genres.all()]
+        form.platforms.data = game.platforms.all()
+        form.genres.data = game.genres.all()
 
     return render_template('edit_game.html', game=game, form=form)
 
@@ -119,12 +119,10 @@ def add_game():
         db.session.add(game)
         db.session.commit()
         for g in genres:
-            genre = Genre.query.get(g)
-            game.add_genre(genre)
+            game.add_genre(g)
         db.session.commit()
         for p in platforms:
-            platform = Platform.query.get(p)
-            game.add_platform(platform)
+            game.add_platform(p)
         db.session.commit()
         flash('Congratulations, ' + game_name + ' has been added!')
         return redirect(url_for('games'))
