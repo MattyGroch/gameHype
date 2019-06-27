@@ -4,7 +4,6 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import UserMixin
 from hashlib import md5
 
-
 class User(UserMixin, db.Model):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(64), index=True, unique=True)
@@ -26,17 +25,14 @@ class User(UserMixin, db.Model):
         return 'https://www.gravatar.com/avatar/{}?d=identicon&s={}'.format(
             digest, size)
 
-
 class Rating(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
     hype = db.Column(db.Integer)
-    timestamp = db.Column(db.DateTime, index=True, default=datetime.utcnow)
-    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
-    game_id = db.Column(db.Integer, db.ForeignKey('game.id'))
+    timestamp = db.Column(db.DateTime, primary_key=True, index=True, default=datetime.utcnow)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), primary_key=True, nullable=False)
+    game_id = db.Column(db.Integer, db.ForeignKey('game.id'), primary_key=True, nullable=False)
 
     def __repr__(self):
         return '<Rating {}>'.format(self.hype)
-
 
 class Platform(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -46,7 +42,6 @@ class Platform(db.Model):
 
     def __repr__(self):
         return '<Platform {}>'.format(self.platform_name)
-
 
 class Game(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -135,6 +130,10 @@ class Genre(db.Model):
 class Company(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     company_name = db.Column(db.String(128), index=True, unique=True)
+    city = db.Column(db.String(64))
+    region = db.Column(db.String(64))
+    country = db.Column(db.String(64))
+    established = db.Column(db.Integer)
 
     developed = db.relationship('Game', secondary="developer_games", lazy='dynamic')
     published = db.relationship('Game', secondary="publisher_games", lazy='dynamic')
