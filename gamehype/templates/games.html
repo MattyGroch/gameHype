@@ -4,8 +4,9 @@
   {{ super() }}
 <script src="https://storage.googleapis.com/hypetrain_app/js/jquery.barrating.js"></script>
 <script type="text/javascript">
+{% for game in games %}
    $(function() {
-      $('#sethype').barrating('show', {
+      $('{{ game.id }}').barrating('show', {
         theme: 'fontawesome-stars',
         showSelectedRating: true,
         deselectable: true,
@@ -19,6 +20,7 @@
         }
       });
    });
+{% endfor %}
 </script>
 {% endblock scripts %}
 
@@ -68,7 +70,7 @@
             {% else %}
             <td align="center">
               <!-- {{ game.ratings.filter_by(user_id=user.id).first().hype }} -->
-              <select id="sethype">
+              <select id="{{ game.id }}">
                 <option value=""></option>
                 <option value="1">1</option>
                 <option value="2">2</option>
