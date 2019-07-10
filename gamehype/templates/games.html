@@ -1,5 +1,27 @@
 {% extends "base.html" %}
 
+{% block scripts %}
+  {{ super() }}
+<script src="https://storage.googleapis.com/hypetrain_app/js/jquery.barrating.js"></script>
+<script type="text/javascript">
+   $(function() {
+      $('#sethype').barrating('show', {
+        theme: 'fontawesome-stars',
+        showSelectedRating: true,
+        deselectable: true,
+        triggerChange: true,
+        onSelect: function(value, text, event) {
+          if (typeof(event) !== 'undefined') {
+            console.log(event.target);
+          } else {
+            // things
+          }
+        }
+      });
+   });
+</script>
+{% endblock scripts %}
+
 {% block app_content %}
 <div class="container-fluid">
   <div class="row">
@@ -23,7 +45,7 @@
             <th scope="col" class="text-center">Genre(s)</th>
             {% if current_user.is_anonymous %}
             {% else %}
-            <th scope="col">My Hype Level</th>
+            <th scope="col" class="text-center">My Hype Level</th>
             {% endif %}
           </tr>
         </thead>
@@ -44,8 +66,16 @@
             </td>
             {% if current_user.is_anonymous %}
             {% else %}
-            <td>
-              {{ game.ratings.filter_by(user_id=user.id).first().hype }}
+            <td align="center">
+              <!-- {{ game.ratings.filter_by(user_id=user.id).first().hype }} -->
+              <select id="sethype">
+                <option value=""></option>
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
+                <option value="5">5</option>
+              </select>
             </td>
             {% endif %}
           </tr>
