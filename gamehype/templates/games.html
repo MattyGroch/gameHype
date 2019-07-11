@@ -3,10 +3,11 @@
 {% block scripts %}
   {{ super() }}
 <script src="https://storage.googleapis.com/hypetrain_app/js/jquery.barrating.js"></script>
-<script type="text/javascript">
 {% for game in games %}
+<script type="text/javascript">
    $(function() {
-      $('{{ game.id }}').barrating('show', {
+      $('#{{ game.id }}').barrating({
+        initialRating: '{{ game.ratings.filter_by(user_id=user.id).first().hype }}',
         theme: 'fontawesome-stars',
         showSelectedRating: true,
         deselectable: true,
@@ -20,8 +21,8 @@
         }
       });
    });
-{% endfor %}
 </script>
+{% endfor %}
 {% endblock scripts %}
 
 {% block app_content %}
