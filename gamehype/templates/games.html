@@ -3,6 +3,7 @@
 {% block scripts %}
   {{ super() }}
 <script src="https://storage.googleapis.com/hypetrain_app/js/jquery.barrating.js"></script>
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 {% for game in games %}
 <script type="text/javascript">
    $(function() {
@@ -14,16 +15,17 @@
         triggerChange: true,
         onSelect: function(value, text, event) {
           if (typeof(event) !== 'undefined') {
-            $.ajax({
-              url: '/change_hype_level',
-              type: 'post',
-              data: {
-                'user_id':'{{ user.id }}',
-                'game_id':'{{ game.id }}',
-                'rating':value
-              },
-              dataType: 'json'              
+            axios.post('/change_hype_level', {
+              user_id: '{{ user.id }}',
+              game_id: '{{ game.id }}',
+              rating: value
             })
+            .then(function (response) {
+              console.log(response);
+            })
+            .catch(function (error) {
+              console.log(error);
+            });
           } else {
             // value was set programatically
           }
