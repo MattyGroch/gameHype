@@ -1,6 +1,6 @@
 import json, random
 
-from flask import render_template, flash, redirect, url_for, request
+from flask import render_template, flash, redirect, url_for, request, jsonify
 from werkzeug.urls import url_parse
 from flask_login import current_user, login_user, logout_user, login_required
 from gamehype import app, db
@@ -155,8 +155,8 @@ def change_hype_level():
     data = request.get_json()
     print(data)
     rating = Rating(
-        user_id = data['userid'],
-        game_id = data['gameid'],
+        user_id = data['user_id'],
+        game_id = data['game_id'],
         hype = data['rating']
     )
     db.session.add(rating)

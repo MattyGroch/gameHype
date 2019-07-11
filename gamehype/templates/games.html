@@ -17,7 +17,11 @@
             $.ajax({
               url: '/change_hype_level',
               type: 'post',
-              data: {userid:{{ user.id }},gameid:{{ game.id }},rating:value},
+              data: {
+                'user_id':'{{ user.id }}',
+                'game_id':'{{ game.id }}',
+                'rating':value
+              },
               dataType: 'json'              
             })
           } else {
