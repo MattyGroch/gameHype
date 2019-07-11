@@ -19,23 +19,20 @@ def index():
 
 @app.route('/ratings')
 def ratings():
-    ratings = Rating.query.all()
     return render_template(
         'ratings.html',
         title='Ratings',
-        ratings=ratings
+        ratings = Rating.query.all()
         )
 
 
 @app.route('/games')
 def games():
-    games = Game.query.all()
-    user = current_user
     return render_template(
         'games.html',
         title='Game List',
-        games=games,
-        user=user
+        games = Game.query.all(),
+        user = current_user
         )
 
 

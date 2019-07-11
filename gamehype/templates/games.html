@@ -64,7 +64,7 @@
           </tr>
         </thead>
         <tbody>
-          {% for game in games %}
+          {% for game in games | sort(attribute='game_name') %}
           <tr>
             <th scope="row"><a href="{{ url_for('game', game_id=game.id) }}">{{ game.game_name }}<a></th>
             <td align="center">
