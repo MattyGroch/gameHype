@@ -14,9 +14,14 @@
         triggerChange: true,
         onSelect: function(value, text, event) {
           if (typeof(event) !== 'undefined') {
-            console.log(event.target);
+            $.ajax({
+              url: '/change_hype_level',
+              type: 'post',
+              data: {userid:{{ user.id }},gameid:{{ game.id }},rating:value},
+              dataType: 'json'              
+            })
           } else {
-            // things
+            // value was set programatically
           }
         }
       });

@@ -1,4 +1,4 @@
-import json
+import json, random
 
 from flask import render_template, flash, redirect, url_for, request
 from werkzeug.urls import url_parse
@@ -148,3 +148,17 @@ def seed_db():
 def logout():
     logout_user()
     return redirect(url_for('index'))
+
+
+@app.route('/change_hype_level', methods = ['POST'])
+def change_hype_level():
+    data = request.get_json()
+    print(data)
+    rating = Rating(
+        user_id = data['userid'],
+        game_id = data['gameid'],
+        hype = data['rating']
+    )
+    db.session.add(rating)
+    db.session.commit()
+    return jsonify({'message': 'Rating updated'}), 200
