@@ -2,7 +2,7 @@
 
 {% block scripts %}
   {{ super() }}
-<script src="https://storage.googleapis.com/hypetrain_app/js/jquery.barrating.js"></script>
+<script src="{{ url_for('static', filename='js/jquery-bar-rating-master/jquery.barrating.js') }}"></script>
 <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 {% for game in games %}
 <script type="text/javascript">
