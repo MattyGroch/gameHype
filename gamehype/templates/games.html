@@ -4,11 +4,13 @@
   {{ super() }}
 <script src="{{ url_for('static', filename='js/jquery-bar-rating-master/jquery.barrating.js') }}"></script>
 <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
-{% for game in games %}
+{% for g in games %}
 <script type="text/javascript">
    $(function() {
-      $('#{{ game.id }}').barrating({
-        initialRating: '{{ game.ratings.filter_by(user_id=user.id).first().hype }}',
+      $('#{{ g.id }}').barrating({
+        {% for r in g.ratings.filter_by(user_id=user.id) %}
+        initialRating: '{{ r.hype }}',
+        {% endfor %}
         theme: 'fontawesome-stars',
         showSelectedRating: true,
         deselectable: true,
@@ -17,7 +19,7 @@
           if (typeof(event) !== 'undefined') {
             axios.post('/change_hype_level', {
               user_id: '{{ user.id }}',
-              game_id: '{{ game.id }}',
+              game_id: '{{ g.id }}',
               rating: value
             })
             .then(function (response) {
@@ -82,7 +84,9 @@
             {% if current_user.is_anonymous %}
             {% else %}
             <td align="center">
-              {{ rating.hype }}
+              {% for rate in game.ratings.filter_by(user_id=user.id) %}
+              {{ rate.hype }}
+              {% endfor %}
             </td>
             <td align="center">
               <!-- {{ game.ratings.filter_by(user_id=user.id).first().hype }} -->

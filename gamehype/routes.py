@@ -28,14 +28,12 @@ def ratings():
 
 @app.route('/games')
 def games():
-    if current_user.is_authenticated:
-        ratings = Rating.query.filter_by(user_id="1").order_by(Rating.timestamp.desc()).all()
     return render_template(
         'games.html',
         title='Game List',
         games = Game.query.all(),
         user = current_user,
-        ratings = ratings
+        ratings = Rating.query.order_by(Rating.timestamp.desc()).all()
         )
 
 
