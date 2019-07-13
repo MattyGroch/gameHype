@@ -13,7 +13,9 @@
         {% endfor %}
         theme: 'fontawesome-stars',
         showSelectedRating: true,
+        allowEmpty: true,
         deselectable: true,
+        emptyValue: '0',
         triggerChange: true,
         onSelect: function(value, text, event) {
           if (typeof(event) !== 'undefined') {
@@ -91,7 +93,6 @@
             <td align="center">
               <!-- {{ game.ratings.filter_by(user_id=user.id).first().hype }} -->
               <select id="{{ game.id }}">
-                <option value=""></option>
                 <option value="1">1</option>
                 <option value="2">2</option>
                 <option value="3">3</option>
