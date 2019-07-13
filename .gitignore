@@ -15,3 +15,6 @@ venv.bak/
 
 # Logfiles
 logs/
+
+# Misc
+.vscode
