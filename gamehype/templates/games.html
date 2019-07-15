@@ -8,7 +8,7 @@
 <script type="text/javascript">
    $(function() {
       $('#{{ g.id }}').barrating({
-        initialRating: '{% if g.latest_user_rating(user) == null %}0{% else %}{{ g.latest_user_rating(user) }}{% endif %}',
+        initialRating: '{% if g.latest_user_rating(user) == -1 %}0{% else %}{{ g.latest_user_rating(user) }}{% endif %}',
         theme: 'fontawesome-stars',
         showSelectedRating: true,
         allowEmpty: true,

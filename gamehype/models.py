@@ -62,7 +62,7 @@ class Game(db.Model):
     def latest_user_rating(self, user):
         latest_rating = self.ratings.filter_by(user_id=user.id).order_by(Rating.timestamp.desc()).first()
         if latest_rating == None:
-            return 0
+            return -1
         else:
             return latest_rating.hype
 
