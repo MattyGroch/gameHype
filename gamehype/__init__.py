@@ -1,4 +1,5 @@
 from flask import Flask
+from whitenoise import WhiteNoise
 from config import Config
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
@@ -10,6 +11,7 @@ from logging.handlers import SMTPHandler, RotatingFileHandler
 import os
 
 app = Flask(__name__)
+app.wsgi_app = WhiteNoise(app.wsgi_app, root='gamehype/static/')
 app.config.from_object(Config)
 db = SQLAlchemy(app)
 migrate = Migrate(app, db)

@@ -1,5 +1,43 @@
 {% extends "base.html" %}
 
+{% block scripts %}
+  {{ super() }}
+<script src="{{ url_for('static', filename='js/jquery-bar-rating-master/jquery.barrating.js') }}"></script>
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+{% for g in games %}
+<script type="text/javascript">
+   $(function() {
+      $('#{{ g.id }}').barrating({
+        initialRating: '{% if g.latest_user_rating(user) == -1 %}0{% else %}{{ g.latest_user_rating(user) }}{% endif %}',
+        theme: 'fontawesome-stars',
+        showSelectedRating: true,
+        allowEmpty: true,
+        deselectable: true,
+        emptyValue: '0',
+        triggerChange: true,
+        onSelect: function(value, text, event) {
+          if (typeof(event) !== 'undefined') {
+            axios.post('/change_hype_level', {
+              user_id: '{{ user.id }}',
+              game_id: '{{ g.id }}',
+              rating: value
+            })
+            .then(function (response) {
+              console.log(response);
+            })
+            .catch(function (error) {
+              console.log(error);
+            });
+          } else {
+            // value was set programatically
+          }
+        }
+      });
+   });
+</script>
+{% endfor %}
+{% endblock scripts %}
+
 {% block app_content %}
 <div class="container-fluid">
   <div class="row">
@@ -23,12 +61,12 @@
             <th scope="col" class="text-center">Genre(s)</th>
             {% if current_user.is_anonymous %}
             {% else %}
-            <th scope="col">My Hype Level</th>
+            <th scope="col" class="text-center">My Hype Level</th>
             {% endif %}
           </tr>
         </thead>
         <tbody>
-          {% for game in games %}
+          {% for game in games | sort(attribute='game_name') %}
           <tr>
             <th scope="row"><a href="{{ url_for('game', game_id=game.id) }}">{{ game.game_name }}<a></th>
             <td align="center">
@@ -44,8 +82,15 @@
             </td>
             {% if current_user.is_anonymous %}
             {% else %}
-            <td>
-              {{ game.ratings.filter_by(user_id=user.id).first().hype }}
+            <td align="center">
+              <!-- {{ game.ratings.filter_by(user_id=user.id).first().hype }} -->
+              <select id="{{ game.id }}">
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
+                <option value="5">5</option>
+              </select>
             </td>
             {% endif %}
           </tr>

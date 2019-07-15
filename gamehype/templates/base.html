@@ -1,5 +1,12 @@
 {% extends 'bootstrap/base.html' %}
 
+
+{% block styles %}
+  {{ super() }}
+  <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css">
+  <link rel="stylesheet" href="https://storage.googleapis.com/hypetrain_app/js/dist/themes/fontawesome-stars.css">
+{% endblock styles %}
+
 {% block scripts %}
   {{ super() }}
   {{ moment.include_moment() }}
@@ -7,7 +14,7 @@
 
 {% block title %}
       {% if title %}{{ title }} - HYPElist{% else %}The HYPElist{% endif %}
-{% endblock %}
+{% endblock title %}
 
 {% block navbar %}
     <nav class="navbar navbar-inverse">
@@ -34,7 +41,7 @@
         </ul>
       </div>
     </nav>
-{% endblock %}
+{% endblock navbar %}
 
 {% block content %}
 <div class="container">
@@ -49,4 +56,4 @@
     {# application content needs to be provided in the app_content block #}
     {% block app_content %}{% endblock %}
 </div>
-{% endblock %}
+{% endblock content %}

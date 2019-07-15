@@ -1,6 +1,6 @@
-import json
+import json, random
 
-from flask import render_template, flash, redirect, url_for, request
+from flask import render_template, flash, redirect, url_for, request, jsonify
 from werkzeug.urls import url_parse
 from flask_login import current_user, login_user, logout_user, login_required
 from gamehype import app, db
@@ -19,23 +19,21 @@ def index():
 
 @app.route('/ratings')
 def ratings():
-    ratings = Rating.query.all()
     return render_template(
         'ratings.html',
         title='Ratings',
-        ratings=ratings
+        ratings = Rating.query.all()
         )
 
 
 @app.route('/games')
 def games():
-    games = Game.query.all()
-    user = current_user
     return render_template(
         'games.html',
         title='Game List',
-        games=games,
-        user=user
+        games = Game.query.all(),
+        user = current_user,
+        ratings = Rating.query.order_by(Rating.timestamp.desc()).all()
         )
 
 
@@ -148,3 +146,17 @@ def seed_db():
 def logout():
     logout_user()
     return redirect(url_for('index'))
+
+
+@app.route('/change_hype_level', methods = ['POST'])
+def change_hype_level():
+    data = request.get_json()
+    print(data)
+    rating = Rating(
+        user_id = data['user_id'],
+        game_id = data['game_id'],
+        hype = data['rating']
+    )
+    db.session.add(rating)
+    db.session.commit()
+    return jsonify({'message': 'Rating updated'}), 200
