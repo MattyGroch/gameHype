@@ -61,7 +61,6 @@
             <th scope="col" class="text-center">Genre(s)</th>
             {% if current_user.is_anonymous %}
             {% else %}
-            <th scope="col" class="text-center">Hype Value</th>
             <th scope="col" class="text-center">My Hype Level</th>
             {% endif %}
           </tr>
@@ -83,11 +82,6 @@
             </td>
             {% if current_user.is_anonymous %}
             {% else %}
-            <td align="center">
-              {% for rate in game.ratings.filter_by(user_id=user.id) %}
-              {{ rate.hype }}
-              {% endfor %}
-            </td>
             <td align="center">
               <!-- {{ game.ratings.filter_by(user_id=user.id).first().hype }} -->
               <select id="{{ game.id }}">
