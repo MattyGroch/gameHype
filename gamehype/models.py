@@ -60,8 +60,11 @@ class Game(db.Model):
         return '<Game {}>'.format(self.game_name)
 
     def latest_user_rating(self, user):
-        latest_rating = self.ratings.filter_by(user_id=user.id).order_by(Rating.timestamp.desc()).first().hype
-        return latest_rating
+        latest_rating = self.ratings.filter_by(user_id=user.id).order_by(Rating.timestamp.desc()).first()
+        if latest_rating == None:
+            return 0
+        else:
+            return latest_rating.hype
 
     def update_lists(self, newlist, attribute_str):
         #define set of old attributes
