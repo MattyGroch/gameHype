@@ -1,10 +1,16 @@
 {
   "genres": [
-    "First-Person Shooter",
+    "Action",
+    "Adventure",
+    "Fighting",
+    "Platform",
+    "Puzzle",
     "Racing",
+    "Role-playing",
+    "Shooter",
+    "Simulation",
     "Sports",
-    "Party",
-    "Battle Royale"
+    "Strategy"
   ],
   "platforms": [
     "Xbox One",
