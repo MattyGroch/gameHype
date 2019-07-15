@@ -59,6 +59,10 @@ class Game(db.Model):
     def __repr__(self):
         return '<Game {}>'.format(self.game_name)
 
+    def latest_user_rating(self, user):
+        latest_rating = self.ratings.filter_by(user_id=user.id).order_by(Rating.timestamp.desc()).first().hype
+        return latest_rating
+
     def update_lists(self, newlist, attribute_str):
         #define set of old attributes
         oldset = set(getattr(self, attribute_str).all())

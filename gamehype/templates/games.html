@@ -8,9 +8,7 @@
 <script type="text/javascript">
    $(function() {
       $('#{{ g.id }}').barrating({
-        {% for r in g.ratings.filter_by(user_id=user.id) %}
-        initialRating: '{{ r.hype }}',
-        {% endfor %}
+        initialRating: '{{ g.latest_user_rating(user) }}',
         theme: 'fontawesome-stars',
         showSelectedRating: true,
         allowEmpty: true,
